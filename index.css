@@ -101,6 +101,8 @@
     --icon-size-s: 32px;
     --icon-size-xs: 24px;
     --icon-size-xxs: 16px;
+    --accordion-transition: .2s ease-in-out;
+    --button-transition: .3s ease-in-out;
 }
 body {
     display: block;
@@ -114,6 +116,11 @@ body {
     -webkit-font-smoothing: antialiased;
     opacity: 1 !important;
 }
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
 .con-button {
     background-color: transparent;
     border: 2px solid var(--text-color);
@@ -123,15 +130,33 @@ body {
     font-weight: 700;
     text-decoration: none;
     border-radius: 25px;
-    font-size: 19px;
-    line-height: 24px;
-    min-height: 28px;
-    padding: 10px 24px 8px;
+    font-size: var(--type-body-m-size);
+    line-height: var(--type-body-m-lh);
+    padding: 10px 24px 10px;
+    transition: var(--button-transition);
+    -webkit-transition: var(--button-transition);
+    -moz-transition: var(--button-transition);
+    -o-transition: var(--button-transition);
+}
+.con-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 5px var(--color-accent-focus-ring);
+
+}
+.con-button:hover, .con-button:focus-visible {
+    background: var(--text-color);
+    color: var(--color-white)
 }
 .con-button.blue {
     background: var(--color-accent);
     border-color: var(--color-accent);
     color: var(--color-white);
+}
+.con-button.blue:hover {
+    background: var(--color-accent-hover);
+}
+.con-button.blue:active {
+    background: var(--color-accent-down);
 }
 .hero {
     text-align: center;
@@ -148,9 +173,13 @@ body {
 .action-area > *:not(:last-child) {
     margin-right: 20px;
 }
+.hero h1 {
+    font-size: var(--type-heading-xxl-size);
+    line-height:var(--type-heading-xxl-lh);
+}
 .hero p {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: var(--type-heading-l-size);
+    line-height:var(--type-heading-xl-lh);
     margin: 12px 0;
 }
 .brick {
@@ -158,17 +187,17 @@ body {
 }
 .title {
     text-align: center;
-    font-size: 20px;
+    font-size: var(--type-heading-m-size);
 }
 .price {
     text-align: center;
-    font-size: 24px;
+    font-size: var(--type-heading-l-size);
     font-weight: 700;
 }
 .description {
     text-align: left;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: var( --type-detail-l-size);
+    line-height: var( --type-detail-xl-lh);
     margin: 12px 0;
 }
 
@@ -176,13 +205,36 @@ body {
     margin: 0 auto;
     padding: 50px;
     gap: var(--spacing-m);
+    /* width: var(--grid-container-width); */
     max-width: 1000px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.masonry .brick {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+}
+
+.masonry .brick.double {
+    grid-column: 2 / span 2;
+}
+
+.masonry .brick.triple {
+    grid-row-start: 2;
+    grid-column: 1 / span 3;
+
 }
 
 .faq {
     max-width: 1000px;
     margin: 20px auto;
     border-bottom: 1px solid #ccc;
+}
+.faq:hover {
+    cursor: pointer;
 }
 .faq .question {
     border-top: 1px solid #ccc;
@@ -191,9 +243,19 @@ body {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    -webkit-transition: var(--accordion-transition);
+    -moz-transition: var(--accordion-transition);
+    -o-transition: var(--accordion-transition);
+    transition: var(--accordion-transition);
 }
 .faq .answer {
     padding: 0 8px;
+    overflow: hidden;
+    max-height: 0;
+    -webkit-transition: var(--accordion-transition);
+    -moz-transition: var(--accordion-transition);
+    -o-transition: var(--accordion-transition);
+    transition: var(--accordion-transition);
 }
 .faq .question::after {
     content: '';
@@ -207,9 +269,20 @@ body {
     transform: rotate(225deg);
     right: 12px;
     top: 36px;
+    -webkit-transition: var(--accordion-transition);
+    -moz-transition: var(--accordion-transition);
+    -o-transition: var(--accordion-transition);
+    transition: var(--accordion-transition);
 }
 .faq .answer p {
     margin-top: 0;
+}
+
+.faq-set.opened .answer{
+    max-height: 100%;
+}
+.faq-set.opened .question::after {
+    transform: rotate(135deg);
 }
 .banner {
     background-color: #eee;
@@ -218,17 +291,86 @@ body {
 }
 .banner .con-button.blue {
     margin-left: 8px;
-    font-size: 18px;
     padding: 4px 12px;
 }
-.section:last-child {
-    margin-bottom: 100px;
+
+.footer {
+    margin: 6rem 0 0 0;
+    justify-self: flex-end;
+    transform: translateY(100%);
+    -webkit-transition: var(--accordion-transition);
+    -moz-transition: var(--accordion-transition);
+    -o-transition: var(--accordion-transition);
+    transition: var(--accordion-transition);
+}
+
+.footer.sticky {
+    position: sticky;
+    bottom: 0;
+    transform: translateY(0%);
 }
 
 
-@media screen and (min-width: 600px) {
+/* Mobile */
+@media screen and (max-width: 782px) {
+    body {
+        font-size: var(--type-body-s-size);
+        line-height: var(--type-body-s-lh);
+    }
+    .hero {
+        padding: 2rem;
+    }
+    .hero h1 {
+        font-size: var(--type-heading-l-size);
+        line-height:var(--type-heading-l-lh);
+    }
+    .hero p {
+        font-size: var(--type-heading-m-size);
+        line-height:var(--type-heading-m-lh);
+    }
+    .masonry {
+        padding: 1rem;
+        gap: var(--spacing-xs);
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+    .masonry .brick.double {
+        grid-row-start: 2;
+        grid-column: 1 / span 1;
+    }
+    .masonry .brick.triple {
+        grid-row-start: 3;
+        grid-column: 1 / 1;
+    }
     .action-area {
-        align-items: center;
-        flex-direction: row;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 2rem !important;
+    }
+    .action-area > *:not(:last-child) {
+        margin-right: 0
+    }
+    .action-area > *:first-child {
+        margin-bottom: 1rem;
+    }
+    .faq .answer, .faq .question {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+/* Tablets */
+@media screen and (min-width: 782px) and (max-width: 1200px) {
+    .hero h1 {
+        font-size: var(--type-heading-xl-size);
+        line-height:var(--type-heading-xl-lh);
+    }
+    .hero p {
+        font-size: var(--type-heading-m-size);
+        line-height:var(--type-heading-m-lh);
+    }
+    .masonry {
+        padding: 2rem;
+        gap: var(--spacing-s);
     }
 }
